@@ -1,0 +1,13 @@
+[Unit]
+Description=GitLab main service
+After=docker.service
+Requires=
+
+[Service]
+Restart=always
+ExecStartPre=-/usr/bin/docker stop gitlab
+ExecStartPre=-/usr/bin/docker rm gitlab
+ExecStart=/opt/docker-containers/gitlab/gitlab.sh
+
+[Install]
+WantedBy=multi-user.target

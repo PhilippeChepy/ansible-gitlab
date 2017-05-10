@@ -40,13 +40,6 @@
   tags:
     - nginx-front
 
-- name: "Create docker network"
-  docker_network:
-    name: "{{ gitlab_network }}"
-  tags:
-    - gitlab
-    - docker
-
 - name: Install the package "openssl"
   apt:
     name: openssl

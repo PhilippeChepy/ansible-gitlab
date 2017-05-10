@@ -3,5 +3,6 @@
 - hosts: all
   roles:
 #    - docker
-    - letsencrypt-init
+    - gitlab
+#    - letsencrypt-init
     - nginx-front
