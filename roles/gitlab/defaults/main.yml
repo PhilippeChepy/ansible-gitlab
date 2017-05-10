@@ -1,0 +1,14 @@
+---
+
+gitlab_cid: gitlab
+gitlab_network: gitlab-network
+
+gitlab_user_uid: 998
+gitlab_user_gid: 998
+
+smtp_address: smtp.gmail.com
+smtp_port: 587
+smtp_user_name: email@gmail.com
+smtp_password: 
+
+ssh_port: 2222

@@ -1,0 +1,15 @@
+---
+
+nginx_front_cid: nginx_front
+
+nginx_front_user: root
+nginx_front_group: root
+nginx_front_user_uid: 0
+nginx_front_user_gid: 0
+
+domain_name: git.***REMOVED***
+domain_contact_email: contact@git.***REMOVED***
+
+dhparam_size: 2048
+dhparam_file: /opt/docker-containers/letsencrypt/etc/letsencrypt/dhparam-{{ dhparam_size }}.crt
+

@@ -1,0 +1,77 @@
+---
+
+
+- name: "Create docker network"
+  docker_network:
+    name: "{{ gitlab_network }}"
+  tags:
+    - gitlab
+    - docker
+
+
+- name: Ensure config directory is present
+  file:
+    state: directory
+    name: "/opt/docker-containers/gitlab/config"
+    owner: "{{ gitlab_user_uid }}"
+    group: "{{ gitlab_user_gid }}"
+    mode: 0750
+  tags:
+    - gitlab
+
+- name: Ensure logs directory is present
+  file:
+    state: directory
+    name: "/opt/docker-containers/gitlab/logs"
+    owner: "{{ gitlab_user_uid }}"
+    group: "{{ gitlab_user_gid }}"
+    mode: 0750
+  tags:
+    - gitlab
+
+- name: Ensure data directory is present
+  file:
+    state: directory
+    name: "/opt/docker-containers/gitlab/data"
+    owner: "{{ gitlab_user_uid }}"
+    group: "{{ gitlab_user_gid }}"
+    mode: 0750
+  tags:
+    - gitlab
+
+- name: Generate launch script
+  template:
+    src: "gitlab.sh.j2"
+    dest: "/opt/docker-containers/gitlab/gitlab.sh"
+    owner: root
+    group: root
+    mode: 0744
+  tags:
+    - gitlab
+
+- name: Generate systemd unit file
+  template:
+    src: gitlab.service.j2
+    dest: "/etc/systemd/system/gitlab.service"
+    mode: 0644
+  tags:
+    - gitlab
+    - systemd
+
+- name: Force systemd to reread
+  systemd:
+    name: gitlab
+    daemon_reload: yes
+  tags:
+    - gitlab
+    - systemd
+
+- name: Enable service gitlab and ensure it is not masked
+  systemd:
+    name: gitlab
+    enabled: yes
+    masked: no
+    state: started
+  tags:
+    - gitlab
+    - systemd
