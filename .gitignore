@@ -1,0 +1,6 @@
+# Ansible retry files
+*.retry
+
+# SSL Certs
+*.crt
+*.key
