@@ -1,0 +1,51 @@
+---
+
+- name: Install the package "apt-transport-https"
+  apt:
+    name: apt-transport-https
+    state: present
+
+- name: Install the package "ca-certificates"
+  apt:
+    name: ca-certificates
+    state: present
+
+- name: Install the package "curl"
+  apt:
+    name: curl
+    state: present
+
+- name: Install the package "gnupg2"
+  apt:
+    name: gnupg2
+    state: present
+
+- name: Install the package "software-properties-common"
+  apt:
+    name: software-properties-common
+    state: present
+
+- name: "Add docker apt key"
+  apt_key:
+    id: 0EBFCD88
+    url: "https://download.docker.com/linux/debian/gpg"
+    state: present
+
+- name: "Add docker repository"
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/debian jessie stable
+    state: present
+
+- name: Install the package "docker-ce"
+  apt:
+    name: docker-ce
+    state: present
+
+- name: Install the package "python-pip"
+  apt:
+    name: python-pip
+    state: present
+
+#- name: Install "docker-py" through pip
+#  pip:
+#    name: docker-py
