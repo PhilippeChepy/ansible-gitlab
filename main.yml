@@ -2,7 +2,7 @@
 
 - hosts: all
   roles:
-#    - docker
+    - docker
     - gitlab
-#    - letsencrypt-init
+    - letsencrypt-init
     - nginx-front

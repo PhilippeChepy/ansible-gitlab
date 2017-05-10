@@ -46,6 +46,6 @@
     name: python-pip
     state: present
 
-#- name: Install "docker-py" through pip
-#  pip:
-#    name: docker-py
+- name: Install "docker-py" through pip
+  pip:
+    name: docker-py
