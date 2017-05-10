@@ -1,0 +1,95 @@
+---
+
+- name: Ensure config directory is present
+  file:
+    state: directory
+    name: "/opt/docker-containers/nginx_front/"
+    owner: "{{ nginx_front_user_uid }}"
+    group: "{{ nginx_front_user_gid }}"
+    mode: 0750
+  tags:
+    - nginx-front
+
+- name: Generate nginx configuration
+  template:
+    src: "nginx.conf.j2"
+    dest: "/opt/docker-containers/nginx_front/nginx.conf"
+    owner: "{{ nginx_front_user }}"
+    group: "{{ nginx_front_group }}"
+    mode: 0444
+  tags:
+    - nginx-front
+
+- name: Generate nginx git site configuration
+  template:
+    src: "git.conf.j2"
+    dest: "/opt/docker-containers/nginx_front/{{ domain_name }}.conf"
+    owner: "{{ nginx_front_user }}"
+    group: "{{ nginx_front_group }}"
+    mode: 0444
+  tags:
+    - nginx-front
+
+- name: Ensure log directory is present
+  file:
+    state: directory
+    name: "/opt/docker-containers/nginx_front/logs"
+    owner: "{{ nginx_front_user_uid }}"
+    group: "{{ nginx_front_user_gid }}"
+    mode: 0750
+  tags:
+    - nginx-front
+
+- name: "Create docker network"
+  docker_network:
+    name: "{{ gitlab_network }}"
+  tags:
+    - gitlab
+    - docker
+
+- name: Install the package "openssl"
+  apt:
+    name: openssl
+    state: present
+
+- name: Find path to the openssl binary
+  command: which openssl
+  changed_when: false
+  register: which_openssl_output
+
+- name: Register fact containing path to openssl binary
+  set_fact:
+    dhparam_openssl_binary: "{{which_openssl_output.stdout_lines[0]}}"
+  no_log: true
+
+- name: Generate Diffie-Hellman parameter file
+  command: "{{dhparam_openssl_binary}} dhparam -out '{{ dhparam_file }}' {{ dhparam_size }}"
+  args:
+    creates: "{{ dhparam_file }}"
+
+- name: Generate systemd unit file
+  template:
+    src: nginx_front.service.j2
+    dest: "/etc/systemd/system/nginx_front.service"
+    mode: 0644
+  tags:
+    - nginx-front
+    - systemd
+
+- name: Force systemd to reread
+  systemd:
+    name: nginx_front
+    daemon_reload: yes
+  tags:
+    - nginx-front
+    - systemd
+
+- name: Enable service nginx and ensure it is not masked
+  systemd:
+    name: nginx_front
+    enabled: yes
+    masked: no
+    state: started
+  tags:
+    - nginx-front
+    - systemd

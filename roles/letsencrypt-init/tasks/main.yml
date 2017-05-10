@@ -1,0 +1,15 @@
+---
+
+- name: Request SSL certificates from Let's Encrypt
+  docker_container:
+    name: letsencrypt-init
+    image: quay.io/letsencrypt/letsencrypt:latest
+    state: started
+    restart: yes
+    ports:
+     - "443:443"
+     - "80:80"
+    volumes:
+     - "/opt/docker-containers/letsencrypt/etc/letsencrypt:/etc/letsencrypt"
+     - "/opt/docker-containers/letsencrypt/var/lib/letsencrypt:/var/lib/letsencrypt"
+    command: certonly --standalone --agree-tos --renew-by-default -d {{ domain_name }} -m {{ domain_contact_email }}
