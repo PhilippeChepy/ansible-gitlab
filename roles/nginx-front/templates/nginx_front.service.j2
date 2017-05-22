@@ -9,7 +9,7 @@ ExecStartPre=-/usr/bin/docker stop nginx_front
 ExecStartPre=-/usr/bin/docker rm nginx_front
 ExecStart=/usr/bin/docker run \
     --publish 443:443 --publish 80:80 \
-    --name nginx_front \
+    --name {{ nginx_front_cid }} \
     --restart always \
     --network {{ gitlab_network }} \
     --volume /opt/docker-containers/nginx_front/nginx.conf:/etc/nginx/nginx.conf:ro \
