@@ -23,7 +23,7 @@
 - name: Generate nginx git site configuration
   template:
     src: "git.conf.j2"
-    dest: "/opt/docker-containers/nginx_front/{{ domain_name }}.conf"
+    dest: "/opt/docker-containers/nginx_front/{{ git_domain_name }}.conf"
     owner: "{{ nginx_front_user }}"
     group: "{{ nginx_front_group }}"
     mode: 0444
