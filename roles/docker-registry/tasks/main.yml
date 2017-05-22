@@ -1,0 +1,38 @@
+---
+
+- name: Ensure data directory is present
+  file:
+    state: directory
+    name: "/opt/docker-containers/registry/data"
+    owner: "{{ registry_user_uid }}"
+    group: "{{ registry_user_gid }}"
+    mode: 0750
+  tags:
+    - registry
+
+- name: Generate systemd unit file
+  template:
+    src: registry.service.j2
+    dest: "/etc/systemd/system/registry.service"
+    mode: 0644
+  tags:
+    - registry
+    - systemd
+
+- name: Force systemd to reread
+  systemd:
+    name: registry
+    daemon_reload: yes
+  tags:
+    - registry
+    - systemd
+
+- name: Enable service registry and ensure it is not masked
+  systemd:
+    name: registry
+    enabled: yes
+    masked: no
+    state: started
+  tags:
+    - registry
+    - systemd

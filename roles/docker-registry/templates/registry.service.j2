@@ -1,0 +1,18 @@
+[Unit]
+Description=Docker Registry main service
+After=docker.service
+Requires=
+
+[Service]
+Restart=always
+ExecStartPre=-/usr/bin/docker stop registry
+ExecStartPre=-/usr/bin/docker rm registry
+ExecStart=/usr/bin/docker run \
+    --name {{ registry_cid }} \
+    --restart always \
+    --network {{ gitlab_network }} \
+    --volume /opt/docker-containers/registry/data:/var/lib/registry \
+    registry:2
+
+[Install]
+WantedBy=multi-user.target
