@@ -10,6 +10,41 @@
   tags:
     - registry
 
+- name: Ensure certs directory is present
+  file:
+    state: directory
+    name: "/opt/docker-containers/registry/certs"
+    owner: "{{ gitlab_user_uid }}"
+    group: "{{ gitlab_user_gid }}"
+    mode: 0770
+  tags:
+    - registry
+
+- name: Install the package "openssl"
+  apt:
+    name: openssl
+    state: present
+
+- name: Find path to the openssl binary
+  command: which openssl
+  changed_when: false
+  register: which_openssl_output
+
+- name: Register fact containing path to openssl binary
+  set_fact:
+    cert_openssl_binary: "{{which_openssl_output.stdout_lines[0]}}"
+  no_log: true
+
+- name: Generate keypair
+  command: "{{cert_openssl_binary}} req -new -newkey rsa:4096 -subj \"/CN=gitlab-issuer\" -nodes -x509 -keyout /opt/docker-containers/registry/certs/registry.key -out /opt/docker-containers/registry/certs/registry.crt"
+
+- name: Set KEY file permissions
+  file:
+    path: /opt/docker-containers/registry/certs/registry.key
+    owner: "{{ gitlab_user_uid }}"
+    group: "{{ gitlab_user_gid }}"
+    mode: 0750
+
 - name: Generate systemd unit file
   template:
     src: registry.service.j2
