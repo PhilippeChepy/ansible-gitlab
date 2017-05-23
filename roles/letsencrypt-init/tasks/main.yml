@@ -2,7 +2,7 @@
 
 - name: Request SSL certificates for GitLab from Let's Encrypt
   docker_container:
-    name: letsencrypt-init
+    name: letsencrypt-init-git
     image: quay.io/letsencrypt/letsencrypt:latest
     state: started
     restart: yes
@@ -13,3 +13,18 @@
      - "/opt/docker-containers/letsencrypt/etc/letsencrypt:/etc/letsencrypt"
      - "/opt/docker-containers/letsencrypt/var/lib/letsencrypt:/var/lib/letsencrypt"
     command: certonly --standalone --agree-tos --renew-by-default -d {{ git_domain_name }} -m {{ git_domain_contact_email }}
+
+
+- name: Request SSL certificates for Docker Registry from Let's Encrypt
+  docker_container:
+    name: letsencrypt-init-registry
+    image: quay.io/letsencrypt/letsencrypt:latest
+    state: started
+    restart: yes
+    ports:
+     - "443:443"
+     - "80:80"
+    volumes:
+     - "/opt/docker-containers/letsencrypt/etc/letsencrypt:/etc/letsencrypt"
+     - "/opt/docker-containers/letsencrypt/var/lib/letsencrypt:/var/lib/letsencrypt"
+    command: certonly --standalone --agree-tos --renew-by-default -d {{ registry_domain_name }} -m {{ registry_domain_contact_email }}
