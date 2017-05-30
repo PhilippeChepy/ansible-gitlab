@@ -8,10 +8,10 @@ nginx_front_user_uid: 0
 nginx_front_user_gid: 0
 
 nginx_git_domain_name: ***REMOVED***
-nginx_git_domain_contact_email: contact@***REMOVED***
+nginx_git_domain_contact_email: ***REMOVED***
 
 nginx_registry_domain_name: ***REMOVED***
-nginx_registry_domain_contact_email: contact@***REMOVED***
+nginx_registry_domain_contact_email: ***REMOVED***
 
 nginx_ssl_dhparam_size: 2048
 nginx_ssl_dhparam_file: /opt/docker-containers/letsencrypt/etc/letsencrypt/dhparam-{{ dhparam_size }}.crt
