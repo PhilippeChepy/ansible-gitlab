@@ -7,16 +7,16 @@
     nginx['proxy_set_headers'] = { \"X-Forwarded-Proto\" => \"https\", \"X-Forwarded-Ssl\" => \"on\" }; \
     nginx['listen_port'] = 80; \
     gitlab_rails['smtp_enable'] = true; \
-    gitlab_rails['smtp_address'] = \"{{ smtp_address }}\"; \
-    gitlab_rails['smtp_port'] = {{ smtp_port }}; \
-    gitlab_rails['smtp_user_name'] = \"{{ smtp_user_name }}\"; \
-    gitlab_rails['smtp_password'] = \"{{ smtp_password }}\"; \
+    gitlab_rails['smtp_address'] = \"{{ gitlab_smtp_address }}\"; \
+    gitlab_rails['smtp_port'] = {{ gitlab_smtp_port }}; \
+    gitlab_rails['smtp_user_name'] = \"{{ gitlab_smtp_user_name }}\"; \
+    gitlab_rails['smtp_password'] = \"{{ gitlab_smtp_password }}\"; \
     gitlab_rails['smtp_authentication'] = \"login\"; \
     gitlab_rails['smtp_enable_starttls_auto'] = true; \
     gitlab_rails['smtp_tls'] = false; \
     gitlab_rails['smtp_openssl_verify_mode'] = 'peer'; \
     gitlab_rails['lfs_enabled'] = true; \
-    gitlab_rails['gitlab_shell_ssh_port'] = {{ ssh_port }}; \
+    gitlab_rails['gitlab_shell_ssh_port'] = {{ gitlab_ssh_port }}; \
     registry['enable'] = false; \
 	gitlab_rails['registry_enabled'] = true; \
 	gitlab_rails['registry_host'] = \"{{ registry_domain_name }}\"; \
@@ -25,7 +25,7 @@
 	gitlab_rails['registry_issuer'] = \"omnibus-gitlab-issuer\"; \
 	gitlab_rails['registry_key_path'] = \"/certs/registry.key\"; \
     " \
-    --publish {{ ssh_port }}:22 \
+    --publish {{ gitlab_ssh_port }}:22 \
     --name {{ gitlab_cid }} \
     --restart always \
     --network {{ gitlab_network }} \
