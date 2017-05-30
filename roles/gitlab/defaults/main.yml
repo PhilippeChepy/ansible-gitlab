@@ -8,7 +8,7 @@ gitlab_user_gid: 998
 
 gitlab_smtp_address: smtp.gmail.com
 gitlab_smtp_port: 587
-gitlab_smtp_user_name: email@gmail.com
-gitlab_smtp_password: 
+gitlab_smtp_user_name: ***REMOVED***
+gitlab_smtp_password: ***REMOVED***
 
 gitlab_ssh_port: 2222

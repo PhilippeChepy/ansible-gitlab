@@ -13,8 +13,8 @@ ExecStart=/usr/bin/docker run \
     --restart always \
     --network {{ gitlab_network }} \
     --volume /opt/docker-containers/nginx_front/nginx.conf:/etc/nginx/nginx.conf:ro \
-    --volume /opt/docker-containers/nginx_front/{{ git_domain_name }}.conf:/etc/nginx/sites-enabled/{{ git_domain_name }}.conf:ro \
-    --volume /opt/docker-containers/nginx_front/{{ registry_domain_name }}.conf:/etc/nginx/sites-enabled/{{ registry_domain_name }}.conf:ro \
+    --volume /opt/docker-containers/nginx_front/{{ nginx_git_domain_name }}.conf:/etc/nginx/sites-enabled/{{ nginx_git_domain_name }}.conf:ro \
+    --volume /opt/docker-containers/nginx_front/{{ nginx_registry_domain_name }}.conf:/etc/nginx/sites-enabled/{{ nginx_registry_domain_name }}.conf:ro \
     --volume /opt/docker-containers/nginx_front/logs:/var/log/nginx \
     --volume /opt/docker-containers/letsencrypt/etc/letsencrypt:/etc/letsencrypt \
     nginx:latest

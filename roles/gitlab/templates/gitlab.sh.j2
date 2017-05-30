@@ -2,7 +2,7 @@
 
 /usr/bin/docker run \
     --env GITLAB_OMNIBUS_CONFIG=" \
-    external_url 'https://{{ git_domain_name }}'; \
+    external_url 'https://{{ nginx_git_domain_name }}'; \
     nginx['listen_https'] = false; \
     nginx['proxy_set_headers'] = { \"X-Forwarded-Proto\" => \"https\", \"X-Forwarded-Ssl\" => \"on\" }; \
     nginx['listen_port'] = 80; \
@@ -19,7 +19,7 @@
     gitlab_rails['gitlab_shell_ssh_port'] = {{ gitlab_ssh_port }}; \
     registry['enable'] = false; \
 	gitlab_rails['registry_enabled'] = true; \
-	gitlab_rails['registry_host'] = \"{{ registry_domain_name }}\"; \
+	gitlab_rails['registry_host'] = \"{{ nginx_registry_domain_name }}\"; \
 	gitlab_rails['registry_port'] = \"5000\"; \
 	gitlab_rails['registry_api_url'] = \"http://{{ registry_cid }}:5000\"; \
 	gitlab_rails['registry_issuer'] = \"omnibus-gitlab-issuer\"; \

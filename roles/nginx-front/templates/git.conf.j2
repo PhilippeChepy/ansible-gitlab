@@ -2,8 +2,8 @@ server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
 
-    ssl_certificate /etc/letsencrypt/live/{{ git_domain_name }}/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/{{ git_domain_name }}/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/{{ nginx_git_domain_name }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ nginx_git_domain_name }}/privkey.pem;
 
     ssl_session_cache shared:SSL:10m;
     ssl_session_timeout 60m;
@@ -17,14 +17,14 @@ server {
 
     ssl_stapling on;
     ssl_stapling_verify on;
-    ssl_trusted_certificate /etc/letsencrypt/live/{{ git_domain_name }}/chain.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/{{ nginx_git_domain_name }}/chain.pem;
 
     ssl_dhparam /etc/letsencrypt/dhparam-{{ dhparam_size }}.crt;
     
     resolver 8.8.8.8 8.8.4.4 valid=300s;
     resolver_timeout 5s;
 
-    server_name {{ git_domain_name }};
+    server_name {{ nginx_git_domain_name }};
 
     root /data;
     
@@ -66,5 +66,5 @@ server {
     listen 80 default_server;
     listen [::]:80 default_server;
 
-    return         301 https://{{ git_domain_name }}$request_uri;
+    return         301 https://{{ nginx_git_domain_name }}$request_uri;
 }

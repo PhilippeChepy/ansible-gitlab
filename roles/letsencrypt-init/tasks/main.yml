@@ -12,7 +12,7 @@
     volumes:
      - "/opt/docker-containers/letsencrypt/etc/letsencrypt:/etc/letsencrypt"
      - "/opt/docker-containers/letsencrypt/var/lib/letsencrypt:/var/lib/letsencrypt"
-    command: certonly --standalone --agree-tos --renew-by-default -d {{ git_domain_name }} -m {{ git_domain_contact_email }}
+    command: certonly --standalone --agree-tos --renew-by-default -d {{ nginx_git_domain_name }} -m {{ nginx_git_domain_contact_email }}
 
 
 - name: Request SSL certificates for Docker Registry from Let's Encrypt
@@ -27,4 +27,4 @@
     volumes:
      - "/opt/docker-containers/letsencrypt/etc/letsencrypt:/etc/letsencrypt"
      - "/opt/docker-containers/letsencrypt/var/lib/letsencrypt:/var/lib/letsencrypt"
-    command: certonly --standalone --agree-tos --renew-by-default -d {{ registry_domain_name }} -m {{ registry_domain_contact_email }}
+    command: certonly --standalone --agree-tos --renew-by-default -d {{ nginx_registry_domain_name }} -m {{ nginx_registry_domain_contact_email }}
