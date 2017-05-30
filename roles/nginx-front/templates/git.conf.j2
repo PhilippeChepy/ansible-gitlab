@@ -66,5 +66,5 @@ server {
     listen 80 default_server;
     listen [::]:80 default_server;
 
-    return         301 https://***REMOVED***$request_uri;
+    return         301 https://{{ git_domain_name }}$request_uri;
 }
