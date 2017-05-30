@@ -5,4 +5,5 @@
     - docker
     - gitlab
     - letsencrypt-init
+    - docker-registry
     - nginx-front

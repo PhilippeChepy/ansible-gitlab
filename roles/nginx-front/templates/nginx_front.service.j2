@@ -1,19 +1,20 @@
 [Unit]
 Description=GitLab Nginx Front service
-After=docker.service
-Requires=gitlab.service
+After=gitlab.service registry.service
+Requires=gitlab.service registry.service
 
 [Service]
 Restart=always
 ExecStartPre=-/usr/bin/docker stop nginx_front
 ExecStartPre=-/usr/bin/docker rm nginx_front
 ExecStart=/usr/bin/docker run \
-    --publish 443:443 --publish 80:80 \
-    --name nginx_front \
+    --publish 5000:5000 --publish 443:443 --publish 80:80 \
+    --name {{ nginx_front_cid }} \
     --restart always \
     --network {{ gitlab_network }} \
     --volume /opt/docker-containers/nginx_front/nginx.conf:/etc/nginx/nginx.conf:ro \
-    --volume /opt/docker-containers/nginx_front/{{ domain_name }}.conf:/etc/nginx/sites-enabled/{{ domain_name }}.conf:ro \
+    --volume /opt/docker-containers/nginx_front/{{ nginx_git_domain_name }}.conf:/etc/nginx/sites-enabled/{{ nginx_git_domain_name }}.conf:ro \
+    --volume /opt/docker-containers/nginx_front/{{ nginx_registry_domain_name }}.conf:/etc/nginx/sites-enabled/{{ nginx_registry_domain_name }}.conf:ro \
     --volume /opt/docker-containers/nginx_front/logs:/var/log/nginx \
     --volume /opt/docker-containers/letsencrypt/etc/letsencrypt:/etc/letsencrypt \
     nginx:latest

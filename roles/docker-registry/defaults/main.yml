@@ -1,0 +1,8 @@
+---
+
+registry_cid: registry
+
+registry_user: root
+registry_group: root
+registry_user_uid: 0
+registry_user_gid: 0

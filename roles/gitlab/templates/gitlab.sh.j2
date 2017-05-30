@@ -1,12 +1,36 @@
 #!/bin/bash
 
 /usr/bin/docker run \
-    --env GITLAB_OMNIBUS_CONFIG="external_url 'https://{{ domain_name }}'; nginx['listen_https'] = false; nginx['proxy_set_headers'] = { \"X-Forwarded-Proto\" => \"https\", \"X-Forwarded-Ssl\" => \"on\" }; nginx['listen_port'] = 80; gitlab_rails['smtp_enable'] = true; gitlab_rails['smtp_address'] = \"{{ smtp_address }}\"; gitlab_rails['smtp_port'] = {{ smtp_port }}; gitlab_rails['smtp_user_name'] = \"{{ smtp_user_name }}\"; gitlab_rails['smtp_password'] = \"{{ smtp_password }}\"; gitlab_rails['smtp_authentication'] = \"login\"; gitlab_rails['smtp_enable_starttls_auto'] = true; gitlab_rails['smtp_tls'] = false; gitlab_rails['smtp_openssl_verify_mode'] = 'peer'; gitlab_rails['lfs_enabled'] = true; gitlab_rails['gitlab_shell_ssh_port'] = {{ ssh_port }}" \
-    --publish {{ ssh_port }}:22 \
-    --name gitlab \
+    --env GITLAB_OMNIBUS_CONFIG=" \
+    external_url 'https://{{ nginx_git_domain_name }}'; \
+    nginx['listen_https'] = false; \
+    nginx['proxy_set_headers'] = { \"X-Forwarded-Proto\" => \"https\", \"X-Forwarded-Ssl\" => \"on\" }; \
+    nginx['listen_port'] = 80; \
+    gitlab_rails['smtp_enable'] = true; \
+    gitlab_rails['smtp_address'] = \"{{ gitlab_smtp_address }}\"; \
+    gitlab_rails['smtp_port'] = {{ gitlab_smtp_port }}; \
+    gitlab_rails['smtp_user_name'] = \"{{ gitlab_smtp_user_name }}\"; \
+    gitlab_rails['smtp_password'] = \"{{ gitlab_smtp_password }}\"; \
+    gitlab_rails['smtp_authentication'] = \"login\"; \
+    gitlab_rails['smtp_enable_starttls_auto'] = true; \
+    gitlab_rails['smtp_tls'] = false; \
+    gitlab_rails['smtp_openssl_verify_mode'] = 'peer'; \
+    gitlab_rails['lfs_enabled'] = true; \
+    gitlab_rails['gitlab_shell_ssh_port'] = {{ gitlab_ssh_port }}; \
+    registry['enable'] = false; \
+	gitlab_rails['registry_enabled'] = true; \
+	gitlab_rails['registry_host'] = \"{{ nginx_registry_domain_name }}\"; \
+	gitlab_rails['registry_port'] = \"5000\"; \
+	gitlab_rails['registry_api_url'] = \"http://{{ registry_cid }}:5000\"; \
+	gitlab_rails['registry_issuer'] = \"omnibus-gitlab-issuer\"; \
+	gitlab_rails['registry_key_path'] = \"/certs/registry.key\"; \
+    " \
+    --publish {{ gitlab_ssh_port }}:22 \
+    --name {{ gitlab_cid }} \
     --restart always \
     --network {{ gitlab_network }} \
     --volume /opt/docker-containers/gitlab/config:/etc/gitlab \
     --volume /opt/docker-containers/gitlab/logs:/var/log/gitlab \
     --volume /opt/docker-containers/gitlab/data:/var/opt/gitlab \
+    --volume /opt/docker-containers/registry/certs:/certs \
     gitlab/gitlab-ce:latest

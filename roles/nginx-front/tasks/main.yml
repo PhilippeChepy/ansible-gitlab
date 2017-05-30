@@ -23,12 +23,24 @@
 - name: Generate nginx git site configuration
   template:
     src: "git.conf.j2"
-    dest: "/opt/docker-containers/nginx_front/{{ domain_name }}.conf"
+    dest: "/opt/docker-containers/nginx_front/{{ nginx_git_domain_name }}.conf"
     owner: "{{ nginx_front_user }}"
     group: "{{ nginx_front_group }}"
     mode: 0444
   tags:
     - nginx-front
+    - gitlab
+
+- name: Generate nginx registry site configuration
+  template:
+    src: "registry.conf.j2"
+    dest: "/opt/docker-containers/nginx_front/{{ nginx_registry_domain_name }}.conf"
+    owner: "{{ nginx_front_user }}"
+    group: "{{ nginx_front_group }}"
+    mode: 0444
+  tags:
+    - nginx-front
+    - registry
 
 - name: Ensure log directory is present
   file:
@@ -56,9 +68,9 @@
   no_log: true
 
 - name: Generate Diffie-Hellman parameter file
-  command: "{{dhparam_openssl_binary}} dhparam -out '{{ dhparam_file }}' {{ dhparam_size }}"
+  command: "{{dhparam_openssl_binary}} dhparam -out '{{ nginx_ssl_dhparam_file }}' {{ nginx_ssl_dhparam_size }}"
   args:
-    creates: "{{ dhparam_file }}"
+    creates: "{{ nginx_ssl_dhparam_file }}"
 
 - name: Generate systemd unit file
   template:
