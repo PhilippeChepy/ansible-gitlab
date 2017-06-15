@@ -21,7 +21,7 @@ server {
     ssl_stapling_verify on;
     ssl_trusted_certificate /etc/letsencrypt/live/{{ nginx_registry_domain_name }}/chain.pem;
 
-    ssl_dhparam /etc/letsencrypt/dhparam-{{ dhparam_size }}.crt;
+    ssl_dhparam /etc/letsencrypt/dhparam-{{ nginx_ssl_dhparam_size }}.crt;
     
     resolver 8.8.8.8 8.8.4.4 valid=300s;
     resolver_timeout 5s;
