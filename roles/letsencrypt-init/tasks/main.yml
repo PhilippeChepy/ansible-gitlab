@@ -5,7 +5,6 @@
     name: letsencrypt-init-git
     image: quay.io/letsencrypt/letsencrypt:latest
     state: started
-    restart: yes
     ports:
      - "443:443"
      - "80:80"
@@ -14,13 +13,13 @@
      - "/opt/docker-containers/letsencrypt/var/lib/letsencrypt:/var/lib/letsencrypt"
     command: certonly --standalone --agree-tos --renew-by-default -d {{ nginx_git_domain_name }} -m {{ nginx_git_domain_contact_email }}
 
+- pause:
 
 - name: Request SSL certificates for Docker Registry from Let's Encrypt
   docker_container:
     name: letsencrypt-init-registry
     image: quay.io/letsencrypt/letsencrypt:latest
     state: started
-    restart: yes
     ports:
      - "443:443"
      - "80:80"
